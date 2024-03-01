@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>モビコール服用管理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <body class="text-slate-900 text-base">
+    <header>
+      <h1 class="text-xl py-4 text-center bg-green-500 text-white">モビコール服用管理</h1>
+    </header>
+    <main class="relative mx-4">
+      <section class="text-center">
+        <div class="mt-8 my-16">
+          <h2 class="text-x my-1">便の性状を確認してください。</h2><a
+          href="https://www.eapharma.co.jp/patient/treatment/movicol/drink.html"
+          class="text-sky-600 underline text-xs"
+          >引用元</a
+        >
+          <div>
+            <img
+              src="table.png"
+              alt=""
+              class="w-full lg:w-6/12 flex-block mx-auto"
+            />
+          </div>
+        <div id="select1" class="py-2 flex justify-center">
+            <p class="my-2">便の性状は何番ですか？</p><select id="view" class="bg-slate-100"></select>
+        </div>
+        <h3 class="align-top py-2">飲むのは<textarea id="text_area" class="resize-none w-10 h-5 bg-green-50" maxlength="1" placeholder="0"></textarea>包です。</h3>
+        <p class="sm:px-4">６ヶ月間は飲み続けます。いつまで飲むか記録しましょう。</p>
+        <textarea id="text_area_memo" class="w-64 h-5 bg-green-50  mb-16" placeholder="いつまで飲むかなどメモ"></textarea>
+      </section>
+      <section class="text-center  py-2 mb-4 fixed inset-x-0 bottom-0 z-50 bg-white">
+        <!-- 今日の日付 -->
+        <div></div>
+        <p>今日の分飲んだらクリック！</p>
+        <button id="btn" class="rounded-md p-2 bg-green-800 text-white w-64 hover:scale-105">飲む</button>
+      </section>
+    </main>
+    <footer></footer>
+
+    <script>
+      //便の性状を選ぶ(1-7番)
+      function selectBoxCreate(start, end) {
+        let str = "";
+        for (let i = start; i < end; i++) {
+          str += `<option>${i}</option>`;
+        }
+        return str;
+      }
+      const n = selectBoxCreate(1, 8);
+      $("#view").html(n);
+      
+      //飲んだボタンクリックイベント
+      $("#btn").on("click", function () {
+        const v = $("#text_area").val();
+        localStorage.setItem("num", JSON.stringify(v));
+        alert("飲みました！");
+        $("#btn").css("background-color", "rgb(187 247 208)").css("color", "rgb(15 23 42)");
+        $("#btn").text("飲みました");
+      });
+      
+
+      //text_area_memoの保存
+      $("#btn").on("click", function () {
+        const memo = $("#text_area_memo").val();
+        localStorage.setItem("memo",JSON.stringify(memo));
+      });
+
+      //3.ページ読み込み：保存データ取得表示
+      if(localStorage.getItem("num")){//numの中身はありますか？
+        const v = localStorage.getItem("num");//numの中身をとってきて変数に代入
+        v_parse = JSON.parse(v);//文字列を変数に戻す
+        $("#text_area").val(v_parse);//とってきた値を入れる
+      }
+      if(localStorage.getItem("memo")){
+        const memo = localStorage.getItem("memo");//memoの中身をとってきて変数に代入
+        memo_parse = JSON.parse(memo);//文字列を変数に戻す
+        $("#text_area_memo").val(memo_parse);//とってきた値を入れる
+      }
+    </script>
+  </body>
+</html>
